@@ -4,23 +4,22 @@ function Food({ name, picture }) {
   return (
     <div>
       <h2>I like {name}</h2>
-      <img src={picture} />
+      <img src={picture} alt={name} />
     </div>
   );
 }
 
 const foodILike = [
-  { name: "Samgyeopsal", image: "" },
-  { name: "Bibimbap", image: "" },
-  { name: "Kimbap", image: "" },
-  { name: "Kimchi", image: "" },
+  { id: 1, name: "Kimchi", image: "" },
+  { id: 2, name: "Bibimbap", image: "" },
+  { id: 3, name: "Samgyeopsal", image: "" },
 ];
 
 function App() {
   return (
     <div>
       {foodILike.map((dish) => (
-        <Food name={dish.name} picture={dish.image} />
+        <Food key={dish.id} name={dish.name} picture={dish.image} />
       ))}
     </div>
   );
