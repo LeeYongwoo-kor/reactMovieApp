@@ -1,28 +1,44 @@
 import React from "react";
-
-function Food({ name, picture }) {
-  return (
-    <div>
-      <h2>I like {name}</h2>
-      <img src={picture} alt={name} />
-    </div>
-  );
-}
-
-const foodILike = [
-  { id: 1, name: "Kimchi", image: "" },
-  { id: 2, name: "Bibimbap", image: "" },
-  { id: 3, name: "Samgyeopsal", image: "" },
-];
-
-function App() {
-  return (
-    <div>
-      {foodILike.map((dish) => (
-        <Food key={dish.id} name={dish.name} picture={dish.image} />
-      ))}
-    </div>
-  );
+import axios from "axios";
+import Movie from "./Movie";
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    movies: [],
+  };
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies },
+      },
+    } = await axios.get("https://yts.mx/api/v2/list_movies.json");
+    this.setState({ movies, isLoading: false });
+  };
+  componentDidMount() {
+    // mount시 제일 먼저 호출됨
+    this.getMovies();
+  }
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <div>
+        {isLoading
+          ? "Loading..."
+          : movies.map((movie) => {
+              console.log(movie);
+              return (
+                <Movie
+                  id={movie.id}
+                  year={movie.year}
+                  title={movie.title}
+                  summary={movie.summary}
+                  poster={movie.poster}
+                />
+              );
+            })}
+      </div>
+    );
+  }
 }
 
 export default App;
